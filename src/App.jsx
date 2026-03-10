@@ -2441,7 +2441,7 @@ export default function App() {
   const mono = profil.nom.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase() || "ME";
 
   return (
-    <div style={{ fontFamily: "'Cormorant Garamond', 'Cormorant Garamond', 'Playfair Display', Georgia, serif", background: C.bg, minHeight: "100vh", maxWidth: 520, margin: "0 auto", display: "flex", flexDirection: "column" }}>
+    <div style={{ fontFamily: "'Cormorant Garamond', 'Cormorant Garamond', 'Playfair Display', Georgia, serif", background: C.bg, minHeight: "100vh", display: "flex", flexDirection: "column" }}>
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@400;500;700;900&display=swap');
@@ -2473,10 +2473,10 @@ export default function App() {
       `}</style>
 
       {/* ── HEADER CUIR LUXE ── */}
-      <div className="leather-header" style={{ padding: "0 18px", position: "sticky", top: 0, zIndex: 100, boxShadow: "0 2px 16px rgba(19,8,0,0.18)" }}>
+      <div className="leather-header" style={{ padding: "0 28px", position: "sticky", top: 0, zIndex: 100, boxShadow: "0 2px 16px rgba(19,8,0,0.18)" }}>
 
         {/* Logo row */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "13px 0 0" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 0" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             {/* Monogramme cuir */}
             <div style={{
@@ -2509,37 +2509,47 @@ export default function App() {
           </button>
         </div>
 
-        {/* Tab nav */}
-        <div style={{ display: "flex", gap: 0, marginTop: 10, overflowX: "auto" }}>
+
+      </div>
+
+      {/* ── PAGE CONTENT ── */}
+      <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
+        {/* Sidebar navigation */}
+        <div style={{ width: 220, background: C.card, borderRight: `1px solid ${C.border}`, display: "flex", flexDirection: "column", padding: "20px 0", flexShrink: 0 }}>
           {TABS.map(t => {
             const active = tab === t.id;
             return (
-              <button
-                key={t.id}
-                className="tab-btn"
-                onClick={() => setTab(t.id)}
-                style={{
-                  flexShrink: 0, background: "none", border: "none",
-                  borderBottom: `2px solid ${active ? "#d4beb2" : "transparent"}`,
-                  padding: "8px 12px 10px", cursor: "pointer",
-                  fontSize: 11, fontWeight: active ? 700 : 400,
-                  color: active ? "#fffcf8" : "rgba(212,190,178,0.6)",
-                  display: "flex", alignItems: "center", gap: 4,
-                  whiteSpace: "nowrap", fontFamily: "'DM Sans', sans-serif",
-                  letterSpacing: active ? "0.3px" : "0",
-                }}
-              >
-                <span style={{ fontSize: 13 }}>{t.icon}</span>
+              <button key={t.id} onClick={() => setTab(t.id)} style={{
+                display: "flex", alignItems: "center", gap: 12,
+                padding: "12px 22px", background: active ? C.primaryLight : "none",
+                border: "none", borderLeft: `3px solid ${active ? C.primary : "transparent"}`,
+                cursor: "pointer", fontSize: 13, fontWeight: active ? 700 : 400,
+                color: active ? C.primary : C.sub, textAlign: "left",
+                fontFamily: "'DM Sans', sans-serif", transition: "all 0.15s",
+              }}>
+                <span style={{ fontSize: 16 }}>{t.icon}</span>
                 {t.label}
               </button>
             );
           })}
+          {/* Spacer */}
+          <div style={{ flex: 1 }} />
+          {/* Plan badge bottom */}
+          <div style={{ padding: "16px 22px" }}>
+            <div style={{ background: C.primaryLight, borderRadius: 10, padding: "10px 14px", textAlign: "center" }}>
+              <p style={{ fontSize: 11, fontWeight: 700, color: C.primary, margin: "0 0 6px", textTransform: "uppercase", letterSpacing: 1 }}>
+                {planBadge[PLAN]}
+              </p>
+              <button onClick={() => setTab("compte")} style={{ fontSize: 11, color: C.accent, fontWeight: 700, background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+                Gérer mon plan →
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-
-      {/* ── PAGE CONTENT ── */}
-      <div style={{ flex: 1, overflowY: "auto", fontFamily: "'DM Sans', 'Segoe UI', sans-serif" }}>
-        <Page {...shared} />
+        {/* Main content */}
+        <div style={{ flex: 1, overflowY: "auto", fontFamily: "'DM Sans', 'Segoe UI', sans-serif", maxWidth: 900, padding: "0 40px" }}>
+          <Page {...shared} />
+        </div>
       </div>
     </div>
   );
