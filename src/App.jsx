@@ -1,7 +1,7 @@
 // ╔══════════════════════════════════════════════════════════════╗
-// ║  MonEntreprise — Carnet Pro                                  ║
-// ║  Pour activer l'IA : ajoute dans Lovable                     ║
-// ║  Settings → Environment Variables →                          ║
+// ║  Digicomy — Ton assistant entrepreneur                                  ║
+// ║  Pour activer l'IA : variable Vercel                     ║
+// ║  VITE_ANTHROPIC_KEY = sk-ant-xxxxxxxxxxxx                          ║
 // ║  VITE_ANTHROPIC_KEY = sk-ant-xxxxxxxxxxxx                    ║
 // ╚══════════════════════════════════════════════════════════════╝
 import { useState, useEffect } from "react";
@@ -2390,6 +2390,203 @@ const TABS_CREER = [
   { id: "synthese",   label: "Synthèse",         icon: "✅" },
 ];
 
+
+// ── LANDING PAGE ──────────────────────────────────────────────────────────────
+function LandingPage({ onEnter }) {
+  const [hovered, setHovered] = useState(null);
+
+  const feats_creer = [
+    { icon: "🏢", label: "Projet AGIR guidé", desc: "Structure ton projet étape par étape" },
+    { icon: "🎯", label: "Stratégie & Objectifs", desc: "Méthode SMART pour viser juste" },
+    { icon: "📊", label: "Analyse SWOT", desc: "Connais tes forces, anticipe les risques" },
+    { icon: "💰", label: "Finances prévisionnelles", desc: "Projections sur 3 ans" },
+    { icon: "📄", label: "Business Plan IA", desc: "Généré et rédigé avec l'intelligence artificielle" },
+    { icon: "✅", label: "Checklist création", desc: "Ne rate aucune étape administrative" },
+  ];
+
+  const feats_gerer = [
+    { icon: "👥", label: "Contacts & Clients", desc: "Tous tes contacts au même endroit" },
+    { icon: "🧾", label: "Factures & Devis", desc: "Crée et envoie en quelques secondes" },
+    { icon: "💰", label: "Trésorerie", desc: "Visualise tes flux financiers" },
+    { icon: "✅", label: "Tâches & Projets", desc: "Organise ton quotidien efficacement" },
+    { icon: "🎤", label: "Messages Vocaux", desc: "Collabore avec ton équipe par la voix" },
+    { icon: "📈", label: "Tableau de bord", desc: "Tes KPIs en un coup d'œil" },
+  ];
+
+  return (
+    <div style={{ minHeight: "100vh", background: C.bg, fontFamily: "'DM Sans', sans-serif", overflowX: "hidden" }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@400;500;700;900&display=swap');
+        * { box-sizing: border-box; }
+        .land-btn { transition: transform 0.2s, box-shadow 0.2s; }
+        .land-btn:hover { transform: translateY(-2px); }
+        .feat-card { transition: transform 0.18s, box-shadow 0.18s; }
+        .feat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(82,50,55,0.13) !important; }
+        @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+        .fade-up { animation: fadeUp 0.7s ease forwards; }
+        .fade-up-2 { animation: fadeUp 0.7s 0.15s ease both; }
+        .fade-up-3 { animation: fadeUp 0.7s 0.3s ease both; }
+      `}</style>
+
+      {/* ── NAVBAR ── */}
+      <nav style={{ position: "sticky", top: 0, zIndex: 100, background: "rgba(245,240,239,0.92)", backdropFilter: "blur(12px)", borderBottom: `1px solid ${C.border}`, padding: "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 60 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={{ width: 32, height: 32, borderRadius: 9, background: `linear-gradient(135deg, ${C.primary}, ${C.primaryHover})`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 8px rgba(82,50,55,0.3)" }}>
+            <span style={{ fontSize: 15, fontWeight: 900, color: "#d4beb2", fontFamily: "'Cormorant Garamond', serif" }}>D</span>
+          </div>
+          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 700, color: C.primary, letterSpacing: 0.3 }}>Digicomy App</span>
+          <span style={{ fontSize: 10, color: C.sub, fontWeight: 500, letterSpacing: 1, textTransform: "uppercase", marginLeft: 2, marginTop: 2 }}>Bêta</span>
+        </div>
+        <div style={{ display: "flex", gap: 10 }}>
+          <button onClick={onEnter} className="land-btn" style={{ padding: "8px 18px", borderRadius: 10, border: `1.5px solid ${C.border}`, background: "none", color: C.primary, fontWeight: 700, fontSize: 13, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+            Se connecter
+          </button>
+          <button onClick={onEnter} className="land-btn" style={{ padding: "8px 20px", borderRadius: 10, border: "none", background: `linear-gradient(135deg, ${C.primary}, ${C.primaryHover})`, color: "#fffcf8", fontWeight: 800, fontSize: 13, cursor: "pointer", fontFamily: "'DM Sans', sans-serif", boxShadow: "0 3px 12px rgba(82,50,55,0.3)" }}>
+            Commencer gratuitement →
+          </button>
+        </div>
+      </nav>
+
+      {/* ── HERO ── */}
+      <section style={{ padding: "80px 24px 64px", textAlign: "center", maxWidth: 820, margin: "0 auto" }}>
+        <div className="fade-up" style={{ display: "inline-block", background: C.primaryLight, borderRadius: 20, padding: "6px 16px", fontSize: 12, fontWeight: 700, color: C.primary, letterSpacing: 1, textTransform: "uppercase", marginBottom: 24 }}>
+          ✦ Pour toute personne avec un projet
+        </div>
+        <h1 className="fade-up-2" style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(38px, 7vw, 68px)", fontWeight: 700, color: C.primary, margin: "0 0 20px", lineHeight: 1.1, letterSpacing: "-0.5px" }}>
+          De l'idée à l'entreprise,<br />
+          <em style={{ fontStyle: "italic", color: C.accent }}>on avance ensemble.</em>
+        </h1>
+        <p className="fade-up-3" style={{ fontSize: 17, color: C.sub, maxWidth: 560, margin: "0 auto 36px", lineHeight: 1.7 }}>
+          Tu as un projet, une idée, l'envie de te lancer — mais pas forcément le temps ni les outils pour tout gérer seul·e. Digicomy est là pour ça. Simple, élégant, pensé pour toi.
+        </p>
+        <div className="fade-up-3" style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+          <button onClick={onEnter} className="land-btn" style={{ padding: "14px 32px", borderRadius: 12, border: "none", background: `linear-gradient(135deg, ${C.primary}, ${C.primaryHover})`, color: "#fffcf8", fontWeight: 800, fontSize: 15, cursor: "pointer", fontFamily: "'DM Sans', sans-serif", boxShadow: "0 4px 20px rgba(82,50,55,0.35)" }}>
+            🚀 Je me lance
+          </button>
+          <button onClick={onEnter} className="land-btn" style={{ padding: "14px 28px", borderRadius: 12, border: `1.5px solid ${C.border}`, background: C.card, color: C.primary, fontWeight: 700, fontSize: 15, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+            Découvrir l'app →
+          </button>
+        </div>
+        <p style={{ fontSize: 12, color: C.sub, marginTop: 16 }}>✓ Gratuit pour démarrer &nbsp;·&nbsp; ✓ Aucune compétence technique requise &nbsp;·&nbsp; ✓ Données sécurisées</p>
+      </section>
+
+      {/* ── DIVIDER ── */}
+      <div style={{ maxWidth: 900, margin: "0 auto", height: 1, background: `linear-gradient(90deg, transparent, ${C.border}, transparent)` }} />
+
+      {/* ── 2 UNIVERS ── */}
+      <section style={{ padding: "64px 24px", maxWidth: 1000, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: 48 }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(26px, 4vw, 40px)", fontWeight: 700, color: C.primary, margin: "0 0 12px" }}>
+            Un outil, deux univers
+          </h2>
+          <p style={{ fontSize: 15, color: C.sub, maxWidth: 500, margin: "0 auto" }}>
+            Que tu sois en train de lancer ou de développer ton activité, Digicomy s'adapte à ta réalité.
+          </p>
+        </div>
+
+        <div style={{ display: "flex", gap: 24, flexWrap: "wrap", justifyContent: "center" }}>
+
+          {/* CRÉER */}
+          <div style={{ flex: "1 1 420px", maxWidth: 480, background: C.card, borderRadius: 24, border: `1px solid ${C.border}`, overflow: "hidden", boxShadow: "0 4px 24px rgba(82,50,55,0.07)" }}>
+            <div style={{ background: `linear-gradient(135deg, ${C.primary} 0%, ${C.primaryHover} 100%)`, padding: "28px 32px" }}>
+              <div style={{ fontSize: 32, marginBottom: 10 }}>🚀</div>
+              <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 700, color: "#fffcf8", margin: "0 0 8px" }}>Créer mon entreprise</h3>
+              <p style={{ fontSize: 13, color: "rgba(212,190,178,0.85)", margin: 0, lineHeight: 1.6 }}>Un parcours guidé de A à Z pour transformer ton idée en entreprise solide.</p>
+            </div>
+            <div style={{ padding: "24px 32px", display: "flex", flexDirection: "column", gap: 14 }}>
+              {feats_creer.map(f => (
+                <div key={f.label} className="feat-card" style={{ display: "flex", alignItems: "flex-start", gap: 14, padding: "10px 14px", borderRadius: 12, background: C.bg, border: `1px solid ${C.border}` }}>
+                  <span style={{ fontSize: 18, flexShrink: 0 }}>{f.icon}</span>
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: C.text, marginBottom: 2 }}>{f.label}</div>
+                    <div style={{ fontSize: 12, color: C.sub }}>{f.desc}</div>
+                  </div>
+                </div>
+              ))}
+              <button onClick={onEnter} style={{ marginTop: 8, width: "100%", padding: "12px 0", borderRadius: 12, border: "none", background: `linear-gradient(135deg, ${C.primary}, ${C.primaryHover})`, color: "#fffcf8", fontWeight: 800, fontSize: 13, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+                Démarrer mon projet →
+              </button>
+            </div>
+          </div>
+
+          {/* GÉRER */}
+          <div style={{ flex: "1 1 420px", maxWidth: 480, background: C.card, borderRadius: 24, border: `1px solid ${C.border}`, overflow: "hidden", boxShadow: "0 4px 24px rgba(82,50,55,0.07)" }}>
+            <div style={{ background: `linear-gradient(135deg, ${C.green} 0%, #3d5e41 100%)`, padding: "28px 32px" }}>
+              <div style={{ fontSize: 32, marginBottom: 10 }}>💼</div>
+              <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 700, color: "#fffcf8", margin: "0 0 8px" }}>Gérer mon entreprise</h3>
+              <p style={{ fontSize: 13, color: "rgba(232,240,233,0.85)", margin: 0, lineHeight: 1.6 }}>Tous tes outils de gestion quotidienne réunis dans une interface fluide et intuitive.</p>
+            </div>
+            <div style={{ padding: "24px 32px", display: "flex", flexDirection: "column", gap: 14 }}>
+              {feats_gerer.map(f => (
+                <div key={f.label} className="feat-card" style={{ display: "flex", alignItems: "flex-start", gap: 14, padding: "10px 14px", borderRadius: 12, background: C.bg, border: `1px solid ${C.border}` }}>
+                  <span style={{ fontSize: 18, flexShrink: 0 }}>{f.icon}</span>
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: C.text, marginBottom: 2 }}>{f.label}</div>
+                    <div style={{ fontSize: 12, color: C.sub }}>{f.desc}</div>
+                  </div>
+                </div>
+              ))}
+              <button onClick={onEnter} style={{ marginTop: 8, width: "100%", padding: "12px 0", borderRadius: 12, border: "none", background: `linear-gradient(135deg, ${C.green}, #3d5e41)`, color: "#fffcf8", fontWeight: 800, fontSize: 13, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+                Accéder à mes outils →
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      {/* ── VALEURS SECTION ── */}
+      <section style={{ background: `linear-gradient(135deg, ${C.primary}, ${C.primaryHover})`, padding: "64px 24px" }}>
+        <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(28px, 4vw, 46px)", fontWeight: 700, color: "#fffcf8", margin: "0 0 16px", lineHeight: 1.2, letterSpacing: "-0.3px" }}>
+            Ton projet mérite<br />
+            <em style={{ fontStyle: "italic", color: C.accent }}>de voir le jour.</em>
+          </h2>
+          <p style={{ fontSize: 16, color: "rgba(212,190,178,0.85)", maxWidth: 560, margin: "0 auto 40px", lineHeight: 1.8, fontFamily: "'DM Sans', sans-serif" }}>
+            Quelle que soit ton idée, on est là pour t'accompagner — pas à pas, sans jargon, sans pression.
+          </p>
+          <div style={{ width: 48, height: 2, background: C.accent, margin: "0 auto 40px", borderRadius: 2 }} />
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(28px, 4vw, 46px)", fontWeight: 700, color: "#fffcf8", margin: "0 0 16px", lineHeight: 1.2, letterSpacing: "-0.3px" }}>
+            Et si tu as déjà<br />
+            <em style={{ fontStyle: "italic", color: C.accent }}>ton entreprise ?</em>
+          </h2>
+          <p style={{ fontSize: 16, color: "rgba(212,190,178,0.85)", maxWidth: 560, margin: "0 auto", lineHeight: 1.8, fontFamily: "'DM Sans', sans-serif" }}>
+            On t'aide à la gérer efficacement — contacts, factures, trésorerie, équipe — tout au même endroit.
+          </p>
+        </div>
+      </section>
+
+      {/* ── CTA FINAL ── */}
+      <section style={{ padding: "72px 24px", textAlign: "center" }}>
+        <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(28px, 4vw, 44px)", fontWeight: 700, color: C.primary, margin: "0 0 16px" }}>
+          Prêt·e à te lancer ?
+        </h2>
+        <p style={{ fontSize: 16, color: C.sub, marginBottom: 32 }}>Crée ton compte gratuitement et commence dès aujourd'hui.</p>
+        <button onClick={onEnter} className="land-btn" style={{ padding: "16px 40px", borderRadius: 14, border: "none", background: `linear-gradient(135deg, ${C.primary}, ${C.primaryHover})`, color: "#fffcf8", fontWeight: 900, fontSize: 16, cursor: "pointer", fontFamily: "'DM Sans', sans-serif", boxShadow: "0 6px 28px rgba(82,50,55,0.35)", letterSpacing: 0.3 }}>
+          Commencer maintenant, gratuitement →
+        </button>
+        <p style={{ fontSize: 12, color: C.sub, marginTop: 14 }}>✓ Aucun engagement &nbsp;·&nbsp; ✓ À ton rythme</p>
+      </section>
+
+      {/* ── FOOTER ── */}
+      <footer style={{ borderTop: `1px solid ${C.border}`, padding: "24px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <div style={{ width: 24, height: 24, borderRadius: 7, background: `linear-gradient(135deg, ${C.primary}, ${C.primaryHover})`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <span style={{ fontSize: 11, fontWeight: 900, color: "#d4beb2", fontFamily: "'Cormorant Garamond', serif" }}>D</span>
+          </div>
+          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 15, fontWeight: 700, color: C.primary }}>Digicomy App</span>
+        </div>
+        <p style={{ fontSize: 12, color: C.sub, margin: 0 }}>© 2026 Digicomy App · Fait avec ♥ en France</p>
+        <div style={{ display: "flex", gap: 16 }}>
+          {["Mentions légales", "Confidentialité", "Contact"].map(l => (
+            <span key={l} style={{ fontSize: 12, color: C.sub, cursor: "pointer" }}>{l}</span>
+          ))}
+        </div>
+      </footer>
+    </div>
+  );
+}
+
 // ── AUTH SCREEN ───────────────────────────────────────────────────────────────
 function AuthScreen({ onLogin }) {
   const [mode, setMode]       = useState("login"); // "login" | "signup"
@@ -2417,7 +2614,7 @@ function AuthScreen({ onLogin }) {
         <div style={{ width: 56, height: 56, borderRadius: 16, background: "linear-gradient(135deg, #523237, #3d2429)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 14px", boxShadow: "0 4px 20px rgba(82,50,55,0.35)" }}>
           <span style={{ fontSize: 26, fontWeight: 900, color: "#d4beb2", fontFamily: "'Cormorant Garamond', serif" }}>M</span>
         </div>
-        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 700, color: C.primary, margin: "0 0 4px" }}>MonEntreprise</h1>
+        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 700, color: C.primary, margin: "0 0 4px" }}>Digicomy App</h1>
         <p style={{ fontSize: 13, color: C.sub, margin: 0, fontFamily: "'DM Sans', sans-serif" }}>Ton assistant entrepreneur</p>
       </div>
 
@@ -2481,7 +2678,7 @@ function WelcomeScreen({ profil, onChoose }) {
               {profil.nom.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase() || "ME"}
             </span>
           </div>
-          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 700, color: "#fffcf8", letterSpacing: 0.5 }}>MonEntreprise</span>
+          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 700, color: "#fffcf8", letterSpacing: 0.5 }}>Digicomy App</span>
         </div>
         <span style={{ fontSize: 12, color: "rgba(212,190,178,0.7)", fontFamily: "'DM Sans', sans-serif" }}>Carnet Pro</span>
       </div>
@@ -2571,7 +2768,7 @@ function WelcomeScreen({ profil, onChoose }) {
 
 // ── APP SHELL ─────────────────────────────────────────────────────────────────
 export default function App() {
-  const [screen, setScreen]   = useState("auth");   // "auth" | "welcome" | "app"
+  const [screen, setScreen]   = useState("landing"); // "landing" | "auth" | "welcome" | "app"
   const [univers, setUnivers] = useState("gerer");  // "gerer" | "creer"
   const [tab, setTab]         = useState("home");
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -2658,9 +2855,10 @@ export default function App() {
   };
   const mono = profil.nom.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase() || "ME";
 
-  // ── ÉCRANS AUTH & WELCOME ──
-  if (screen === "auth")    return <AuthScreen onLogin={handleLogin} />;
-  if (screen === "welcome") return <WelcomeScreen profil={profil} onChoose={handleChoose} />;
+  // ── ÉCRANS ──
+  if (screen === "landing")  return <LandingPage onEnter={() => setScreen("auth")} />;
+  if (screen === "auth")     return <AuthScreen onLogin={handleLogin} />;
+  if (screen === "welcome")  return <WelcomeScreen profil={profil} onChoose={handleChoose} />;
 
   // ── APP PRINCIPALE ──
   return (
@@ -2685,7 +2883,7 @@ export default function App() {
             <div style={{ width: 32, height: 32, borderRadius: 8, background: "linear-gradient(135deg, #d4beb2, #b49786)", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <span style={{ fontSize: 14, fontWeight: 900, color: "#523237", fontFamily: "'Cormorant Garamond', serif" }}>{mono}</span>
             </div>
-            <span style={{ fontSize: 15, fontWeight: 700, color: "#fffcf8", fontFamily: "'Cormorant Garamond', serif", letterSpacing: 0.5 }}>MonEntreprise</span>
+            <span style={{ fontSize: 15, fontWeight: 700, color: "#fffcf8", fontFamily: "'Cormorant Garamond', serif", letterSpacing: 0.5 }}>Digicomy App</span>
 
             {/* Switcher Créer/Gérer */}
             <div style={{ display: "flex", background: "rgba(0,0,0,0.2)", borderRadius: 8, padding: 3, marginLeft: 8 }}>
@@ -2705,7 +2903,7 @@ export default function App() {
 
           {/* Droite : plan + accueil */}
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <button onClick={() => setScreen("welcome")} style={{ background: "rgba(255,255,255,0.1)", border: "none", borderRadius: 7, padding: "5px 10px", color: "rgba(212,190,178,0.8)", fontSize: 11, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+            <button onClick={() => setScreen("landing")} style={{ background: "rgba(255,255,255,0.1)", border: "none", borderRadius: 7, padding: "5px 10px", color: "rgba(212,190,178,0.8)", fontSize: 11, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
               ⌂ Accueil
             </button>
             <button onClick={() => setTab("compte")} style={{ ...planBadgeStyle[PLAN], color: "#fffcf8", border: "none", borderRadius: 8, padding: "5px 11px", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
