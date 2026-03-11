@@ -2370,9 +2370,228 @@ function TachesPage({ tasks, setTasks, PLAN }) {
   );
 }
 
+// ── TABS PAR UNIVERS ──────────────────────────────────────────────────────────
+const TABS_GERER = [
+  { id: "home",     label: "Tableau de bord", icon: "⌂"  },
+  { id: "contacts", label: "Contacts",        icon: "👥" },
+  { id: "factures", label: "Factures",        icon: "🧾" },
+  { id: "taches",   label: "Tâches",          icon: "✅" },
+  { id: "finances", label: "Trésorerie",      icon: "💰" },
+  { id: "compte",   label: "Mon Compte",      icon: "👤" },
+];
+
+const TABS_CREER = [
+  { id: "parcours",   label: "Mon Projet",       icon: "🏢" },
+  { id: "strategie",  label: "Stratégie",        icon: "🎯" },
+  { id: "swot",       label: "État des Lieux",   icon: "📊" },
+  { id: "planning",   label: "Planning",         icon: "📅" },
+  { id: "finances",   label: "Finances",         icon: "💰" },
+  { id: "bizplan",    label: "Business Plan",    icon: "📄" },
+  { id: "synthese",   label: "Synthèse",         icon: "✅" },
+];
+
+// ── AUTH SCREEN ───────────────────────────────────────────────────────────────
+function AuthScreen({ onLogin }) {
+  const [mode, setMode]       = useState("login"); // "login" | "signup"
+  const [email, setEmail]     = useState("");
+  const [password, setPassword] = useState("");
+  const [nom, setNom]         = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError]     = useState("");
+
+  const handle = async () => {
+    if (!email || !password) { setError("Remplis tous les champs."); return; }
+    if (mode === "signup" && !nom) { setError("Entre ton prénom."); return; }
+    setLoading(true); setError("");
+    await new Promise(r => setTimeout(r, 800));
+    onLogin({ nom: nom || email.split("@")[0], email });
+    setLoading(false);
+  };
+
+  return (
+    <div style={{ minHeight: "100vh", background: C.bg, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 24 }}>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@400;500;700;900&display=swap'); *{box-sizing:border-box}`}</style>
+
+      {/* Logo */}
+      <div style={{ textAlign: "center", marginBottom: 36 }}>
+        <div style={{ width: 56, height: 56, borderRadius: 16, background: "linear-gradient(135deg, #523237, #3d2429)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 14px", boxShadow: "0 4px 20px rgba(82,50,55,0.35)" }}>
+          <span style={{ fontSize: 26, fontWeight: 900, color: "#d4beb2", fontFamily: "'Cormorant Garamond', serif" }}>M</span>
+        </div>
+        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 700, color: C.primary, margin: "0 0 4px" }}>MonEntreprise</h1>
+        <p style={{ fontSize: 13, color: C.sub, margin: 0, fontFamily: "'DM Sans', sans-serif" }}>Ton assistant entrepreneur</p>
+      </div>
+
+      {/* Card auth */}
+      <div style={{ background: C.card, borderRadius: 20, border: `1px solid ${C.border}`, padding: "32px 28px", width: "100%", maxWidth: 400, boxShadow: "0 8px 40px rgba(82,50,55,0.1)" }}>
+        {/* Toggle */}
+        <div style={{ display: "flex", background: C.bg, borderRadius: 10, padding: 4, marginBottom: 24 }}>
+          {["login", "signup"].map(m => (
+            <button key={m} onClick={() => { setMode(m); setError(""); }} style={{
+              flex: 1, padding: "8px 0", borderRadius: 8, border: "none", cursor: "pointer",
+              background: mode === m ? C.primary : "none",
+              color: mode === m ? "#fffcf8" : C.sub,
+              fontWeight: 700, fontSize: 13, fontFamily: "'DM Sans', sans-serif",
+              transition: "all 0.2s",
+            }}>
+              {m === "login" ? "Se connecter" : "Créer un compte"}
+            </button>
+          ))}
+        </div>
+
+        {/* Fields */}
+        {mode === "signup" && (
+          <input value={nom} onChange={e => setNom(e.target.value)} placeholder="Ton prénom" style={{ width: "100%", padding: "12px 14px", borderRadius: 10, border: `1.5px solid ${C.border}`, background: C.bg, fontSize: 14, fontFamily: "'DM Sans', sans-serif", marginBottom: 12, outline: "none", color: C.text }} />
+        )}
+        <input value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" type="email" style={{ width: "100%", padding: "12px 14px", borderRadius: 10, border: `1.5px solid ${C.border}`, background: C.bg, fontSize: 14, fontFamily: "'DM Sans', sans-serif", marginBottom: 12, outline: "none", color: C.text }} />
+        <input value={password} onChange={e => setPassword(e.target.value)} placeholder="Mot de passe" type="password" onKeyDown={e => e.key === "Enter" && handle()} style={{ width: "100%", padding: "12px 14px", borderRadius: 10, border: `1.5px solid ${C.border}`, background: C.bg, fontSize: 14, fontFamily: "'DM Sans', sans-serif", marginBottom: 16, outline: "none", color: C.text }} />
+
+        {error && <p style={{ color: C.red, fontSize: 12, margin: "0 0 12px", fontFamily: "'DM Sans', sans-serif" }}>{error}</p>}
+
+        <button onClick={handle} disabled={loading} style={{ width: "100%", padding: "13px 0", borderRadius: 10, border: "none", background: `linear-gradient(135deg, ${C.primary}, ${C.primaryHover})`, color: "#fffcf8", fontWeight: 800, fontSize: 14, fontFamily: "'DM Sans', sans-serif", cursor: loading ? "not-allowed" : "pointer", opacity: loading ? 0.7 : 1 }}>
+          {loading ? "⏳ Connexion..." : mode === "login" ? "Se connecter →" : "Créer mon compte →"}
+        </button>
+
+        <p style={{ textAlign: "center", fontSize: 12, color: C.sub, marginTop: 16, fontFamily: "'DM Sans', sans-serif" }}>
+          🔒 Tes données sont sécurisées
+        </p>
+      </div>
+
+      <p style={{ fontSize: 11, color: C.sub, marginTop: 20, fontFamily: "'DM Sans', sans-serif" }}>
+        Version démo — Supabase Auth à connecter
+      </p>
+    </div>
+  );
+}
+
+// ── WELCOME SCREEN — CHOIX CRÉER / GÉRER ─────────────────────────────────────
+function WelcomeScreen({ profil, onChoose }) {
+  const prenom = profil.nom.split(" ")[0];
+  const heure  = new Date().getHours();
+  const salut  = heure < 12 ? "Bonjour" : heure < 18 ? "Bon après-midi" : "Bonsoir";
+
+  return (
+    <div style={{ minHeight: "100vh", background: C.bg, display: "flex", flexDirection: "column" }}>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@400;500;700;900&display=swap'); *{box-sizing:border-box} .choix-card{transition:transform 0.2s,box-shadow 0.2s;cursor:pointer} .choix-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(82,50,55,0.18)!important}`}</style>
+
+      {/* Header */}
+      <div style={{ background: "linear-gradient(160deg, #523237 0%, #3d2429 100%)", padding: "20px 32px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={{ width: 36, height: 36, borderRadius: 10, background: "linear-gradient(135deg, #d4beb2, #b49786)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <span style={{ fontSize: 16, fontWeight: 900, color: C.primary, fontFamily: "'Cormorant Garamond', serif" }}>
+              {profil.nom.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase() || "ME"}
+            </span>
+          </div>
+          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 700, color: "#fffcf8", letterSpacing: 0.5 }}>MonEntreprise</span>
+        </div>
+        <span style={{ fontSize: 12, color: "rgba(212,190,178,0.7)", fontFamily: "'DM Sans', sans-serif" }}>Carnet Pro</span>
+      </div>
+
+      {/* Contenu */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 24px" }}>
+
+        {/* Salutation */}
+        <div style={{ textAlign: "center", marginBottom: 48 }}>
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: C.sub, margin: "0 0 6px" }}>{salut} 👋</p>
+          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 36, fontWeight: 700, color: C.primary, margin: "0 0 10px" }}>
+            {prenom} !
+          </h1>
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 15, color: C.sub, margin: 0 }}>
+            Que veux-tu faire aujourd'hui ?
+          </p>
+        </div>
+
+        {/* Les 2 cartes */}
+        <div style={{ display: "flex", gap: 24, flexWrap: "wrap", justifyContent: "center", maxWidth: 760 }}>
+
+          {/* CRÉER */}
+          <div className="choix-card" onClick={() => onChoose("creer")} style={{
+            background: C.card, borderRadius: 24, border: `1px solid ${C.border}`,
+            padding: "36px 32px", width: 320, boxShadow: "0 4px 24px rgba(82,50,55,0.08)",
+            display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center",
+          }}>
+            <div style={{ width: 64, height: 64, borderRadius: 18, background: "linear-gradient(135deg, #523237, #7a4a50)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20, boxShadow: "0 4px 16px rgba(82,50,55,0.3)" }}>
+              <span style={{ fontSize: 30 }}>🚀</span>
+            </div>
+            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontWeight: 700, color: C.primary, margin: "0 0 10px" }}>
+              Créer mon entreprise
+            </h2>
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: C.sub, margin: "0 0 24px", lineHeight: 1.6 }}>
+              Parcours guidé de création · Business Plan IA · Stratégie · Finances prévisionnelles
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6, width: "100%", marginBottom: 24 }}>
+              {["🏢 Mon projet AGIR", "🎯 Stratégie & Objectifs", "📊 Analyse SWOT", "💰 Finances & Budget", "📄 Business Plan IA"].map(item => (
+                <div key={item} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: C.sub, fontFamily: "'DM Sans', sans-serif", textAlign: "left" }}>
+                  <div style={{ width: 4, height: 4, borderRadius: "50%", background: C.accent, flexShrink: 0 }} />
+                  {item}
+                </div>
+              ))}
+            </div>
+            <button style={{ width: "100%", padding: "12px 0", borderRadius: 12, border: "none", background: `linear-gradient(135deg, ${C.primary}, ${C.primaryHover})`, color: "#fffcf8", fontWeight: 800, fontSize: 13, fontFamily: "'DM Sans', sans-serif", cursor: "pointer" }}>
+              Commencer →
+            </button>
+          </div>
+
+          {/* GÉRER */}
+          <div className="choix-card" onClick={() => onChoose("gerer")} style={{
+            background: C.card, borderRadius: 24, border: `1px solid ${C.border}`,
+            padding: "36px 32px", width: 320, boxShadow: "0 4px 24px rgba(82,50,55,0.08)",
+            display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center",
+          }}>
+            <div style={{ width: 64, height: 64, borderRadius: 18, background: "linear-gradient(135deg, #5a7a5e, #3d5e41)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20, boxShadow: "0 4px 16px rgba(90,122,94,0.3)" }}>
+              <span style={{ fontSize: 30 }}>💼</span>
+            </div>
+            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontWeight: 700, color: C.primary, margin: "0 0 10px" }}>
+              Gérer mon entreprise
+            </h2>
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: C.sub, margin: "0 0 24px", lineHeight: 1.6 }}>
+              Contacts · Factures · Trésorerie · Tâches · Équipe · Messages vocaux
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6, width: "100%", marginBottom: 24 }}>
+              {["👥 Contacts & Clients", "🧾 Factures & Devis", "💰 Trésorerie", "✅ Tâches & Projets", "🎤 Messages Vocaux"].map(item => (
+                <div key={item} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: C.sub, fontFamily: "'DM Sans', sans-serif", textAlign: "left" }}>
+                  <div style={{ width: 4, height: 4, borderRadius: "50%", background: C.green, flexShrink: 0 }} />
+                  {item}
+                </div>
+              ))}
+            </div>
+            <button style={{ width: "100%", padding: "12px 0", borderRadius: 12, border: "none", background: `linear-gradient(135deg, ${C.green}, #3d5e41)`, color: "#fffcf8", fontWeight: 800, fontSize: 13, fontFamily: "'DM Sans', sans-serif", cursor: "pointer" }}>
+              Accéder →
+            </button>
+          </div>
+        </div>
+
+        {/* Switcher rapide */}
+        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: C.sub, marginTop: 32, textAlign: "center" }}>
+          Tu peux basculer entre les deux univers à tout moment depuis le menu
+        </p>
+      </div>
+    </div>
+  );
+}
+
 // ── APP SHELL ─────────────────────────────────────────────────────────────────
 export default function App() {
-  const [tab, setTab] = useState("home");
+  const [screen, setScreen]   = useState("auth");   // "auth" | "welcome" | "app"
+  const [univers, setUnivers] = useState("gerer");  // "gerer" | "creer"
+  const [tab, setTab]         = useState("home");
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const handleLogin = (userData) => {
+    setProfil(p => ({ ...p, nom: userData.nom, email: userData.email }));
+    setScreen("welcome");
+  };
+
+  const handleChoose = (choix) => {
+    setUnivers(choix);
+    setTab(choix === "gerer" ? "home" : "parcours");
+    setScreen("app");
+  };
 
   // ── ÉTAT GLOBAL PARTAGÉ ──────────────────────────────────────────────────
   const PLAN = "freemium"; // "freemium" | "business" | "premium"
@@ -2414,8 +2633,8 @@ export default function App() {
     { id:3, text:"Bienvenue ! Lance ton parcours 🎉",   type:"success", due:"",           dismissed:false },
   ]);
 
-  // Props partagées injectées dans chaque page
-  const shared = { PLAN, profil, setProfil, contacts, setContacts, factures, setFactures, tasks, setTasks, notifs, setNotifs, setTab };
+  // Props partagées
+  const shared = { PLAN, profil, setProfil, contacts, setContacts, factures, setFactures, tasks, setTasks, notifs, setNotifs, setTab, isMobile, univers, setUnivers, setScreen };
 
   const PAGES = {
     home:     HomePage,
@@ -2428,129 +2647,135 @@ export default function App() {
   };
 
   const Page = PAGES[tab] || HomePage;
+  const TABS = univers === "gerer" ? TABS_GERER : TABS_CREER;
 
-  // Badge plan dynamique dans le header
+  // Badge plan
   const planBadge = { freemium: "✦ Freemium", business: "💼 Business", premium: "⭐ Premium" };
   const planBadgeStyle = {
-    freemium: { background: "linear-gradient(135deg, #b8924a, #d4a96a)", boxShadow: "0 1px 6px rgba(184,146,74,0.4)" },
-    business: { background: "linear-gradient(135deg, #523237, #7a4a50)", boxShadow: "0 1px 6px rgba(82,50,55,0.4)" },
-    premium:  { background: "linear-gradient(135deg, #7F5A68, #a07085)", boxShadow: "0 1px 6px rgba(127,90,104,0.4)" },
+    freemium: { background: "linear-gradient(135deg, #b8924a, #d4a96a)" },
+    business: { background: "linear-gradient(135deg, #523237, #7a4a50)" },
+    premium:  { background: "linear-gradient(135deg, #7F5A68, #a07085)" },
   };
-
-  // Monogramme depuis profil
   const mono = profil.nom.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase() || "ME";
 
-  return (
-    <div style={{ fontFamily: "'Cormorant Garamond', 'Cormorant Garamond', 'Playfair Display', Georgia, serif", background: C.bg, minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+  // ── ÉCRANS AUTH & WELCOME ──
+  if (screen === "auth")    return <AuthScreen onLogin={handleLogin} />;
+  if (screen === "welcome") return <WelcomeScreen profil={profil} onChoose={handleChoose} />;
 
+  // ── APP PRINCIPALE ──
+  return (
+    <div style={{ fontFamily: "'Cormorant Garamond', serif", background: C.bg, minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@400;500;700;900&display=swap');
         * { box-sizing: border-box; }
-        body { font-family: 'DM Sans', sans-serif; }
-
-        /* Texture cuir subtile via CSS */
         .leather-header {
           background:
-            repeating-linear-gradient(
-              0deg,
-              transparent,
-              transparent 2px,
-              rgba(255,255,255,0.015) 2px,
-              rgba(255,255,255,0.015) 4px
-            ),
-            repeating-linear-gradient(
-              90deg,
-              transparent,
-              transparent 3px,
-              rgba(0,0,0,0.015) 3px,
-              rgba(0,0,0,0.015) 6px
-            ),
+            repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 4px),
+            repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0,0,0,0.015) 3px, rgba(0,0,0,0.015) 6px),
             linear-gradient(160deg, #523237 0%, #3d2429 50%, #523237 100%);
         }
-        .tab-btn { transition: color 0.15s, border-color 0.15s, background 0.15s; }
-        .tab-btn:hover { background: rgba(82,50,55,0.06) !important; }
         @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
       `}</style>
 
-      {/* ── HEADER CUIR LUXE ── */}
-      <div className="leather-header" style={{ padding: "0 28px", position: "sticky", top: 0, zIndex: 100, boxShadow: "0 2px 16px rgba(19,8,0,0.18)" }}>
-
-        {/* Logo row */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 0" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            {/* Monogramme cuir */}
-            <div style={{
-              width: 34, height: 34, borderRadius: 9,
-              background: "linear-gradient(135deg, #d4beb2 0%, #b49786 100%)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              boxShadow: "0 1px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2)",
-            }}>
-              <span style={{ fontSize: 15, fontWeight: 900, color: "#523237", fontFamily: "'Cormorant Garamond', serif" }}>{mono}</span>
+      {/* ── HEADER ── */}
+      <div className="leather-header" style={{ padding: "0 24px", position: "sticky", top: 0, zIndex: 100, boxShadow: "0 2px 16px rgba(19,8,0,0.18)" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 0" }}>
+          {/* Logo + univers switcher */}
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <div style={{ width: 32, height: 32, borderRadius: 8, background: "linear-gradient(135deg, #d4beb2, #b49786)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ fontSize: 14, fontWeight: 900, color: "#523237", fontFamily: "'Cormorant Garamond', serif" }}>{mono}</span>
             </div>
-            <div>
-              <span style={{ fontSize: 16, fontWeight: 700, color: "#fffcf8", fontFamily: "'Cormorant Garamond', Georgia, serif", letterSpacing: "0.5px" }}>
-                MonEntreprise
+            <span style={{ fontSize: 15, fontWeight: 700, color: "#fffcf8", fontFamily: "'Cormorant Garamond', serif", letterSpacing: 0.5 }}>MonEntreprise</span>
+
+            {/* Switcher Créer/Gérer */}
+            <div style={{ display: "flex", background: "rgba(0,0,0,0.2)", borderRadius: 8, padding: 3, marginLeft: 8 }}>
+              {[{ id: "creer", label: "🚀 Créer", tab: "parcours" }, { id: "gerer", label: "💼 Gérer", tab: "home" }].map(u => (
+                <button key={u.id} onClick={() => { setUnivers(u.id); setTab(u.tab); }} style={{
+                  padding: "5px 12px", borderRadius: 6, border: "none", cursor: "pointer",
+                  background: univers === u.id ? "rgba(255,255,255,0.15)" : "none",
+                  color: univers === u.id ? "#fffcf8" : "rgba(212,190,178,0.6)",
+                  fontSize: 11, fontWeight: 700, fontFamily: "'DM Sans', sans-serif",
+                  transition: "all 0.15s",
+                }}>
+                  {u.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Droite : plan + accueil */}
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <button onClick={() => setScreen("welcome")} style={{ background: "rgba(255,255,255,0.1)", border: "none", borderRadius: 7, padding: "5px 10px", color: "rgba(212,190,178,0.8)", fontSize: 11, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+              ⌂ Accueil
+            </button>
+            <button onClick={() => setTab("compte")} style={{ ...planBadgeStyle[PLAN], color: "#fffcf8", border: "none", borderRadius: 8, padding: "5px 11px", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+              {planBadge[PLAN]}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* ── CONTENU ── */}
+      <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
+
+        {/* Sidebar desktop */}
+        {!isMobile && (
+          <div style={{ width: 220, background: C.card, borderRight: `1px solid ${C.border}`, display: "flex", flexDirection: "column", padding: "16px 0", flexShrink: 0 }}>
+            {/* Label univers */}
+            <div style={{ padding: "0 22px 12px", borderBottom: `1px solid ${C.border}`, marginBottom: 8 }}>
+              <span style={{ fontSize: 10, fontWeight: 800, color: univers === "creer" ? C.primary : C.green, textTransform: "uppercase", letterSpacing: 1.5, fontFamily: "'DM Sans', sans-serif" }}>
+                {univers === "creer" ? "🚀 Création" : "💼 Gestion"}
               </span>
-              <div style={{ fontSize: 9, color: "rgba(212,190,178,0.7)", letterSpacing: "2px", textTransform: "uppercase", fontFamily: "'DM Sans', sans-serif", marginTop: -1 }}>
-                Carnet Pro
+            </div>
+            {TABS.map(t => {
+              const active = tab === t.id;
+              return (
+                <button key={t.id} onClick={() => setTab(t.id)} style={{
+                  display: "flex", alignItems: "center", gap: 10,
+                  padding: "11px 22px", background: active ? C.primaryLight : "none",
+                  border: "none", borderLeft: `3px solid ${active ? C.primary : "transparent"}`,
+                  cursor: "pointer", fontSize: 13, fontWeight: active ? 700 : 400,
+                  color: active ? C.primary : C.sub, textAlign: "left",
+                  fontFamily: "'DM Sans', sans-serif", transition: "all 0.15s",
+                }}>
+                  <span style={{ fontSize: 15 }}>{t.icon}</span>
+                  {t.label}
+                </button>
+              );
+            })}
+            <div style={{ flex: 1 }} />
+            <div style={{ padding: "14px 16px" }}>
+              <div style={{ background: C.primaryLight, borderRadius: 10, padding: "10px 12px", textAlign: "center" }}>
+                <p style={{ fontSize: 10, fontWeight: 800, color: C.primary, margin: "0 0 5px", textTransform: "uppercase", letterSpacing: 1 }}>{planBadge[PLAN]}</p>
+                <button onClick={() => setTab("compte")} style={{ fontSize: 11, color: C.accent, fontWeight: 700, background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+                  Gérer mon plan →
+                </button>
               </div>
             </div>
           </div>
-          <button
-            onClick={() => setTab("compte")}
-            style={{
-              ...planBadgeStyle[PLAN],
-              color: "#fffcf8", border: "none", borderRadius: 8,
-              padding: "6px 12px", fontSize: 11, fontWeight: 700, cursor: "pointer",
-              letterSpacing: "0.5px", fontFamily: "'DM Sans', sans-serif",
-            }}
-          >
-            {planBadge[PLAN]}
-          </button>
-        </div>
+        )}
 
-
-      </div>
-
-      {/* ── PAGE CONTENT ── */}
-      <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
-        {/* Sidebar navigation */}
-        <div style={{ width: 220, background: C.card, borderRight: `1px solid ${C.border}`, display: "flex", flexDirection: "column", padding: "20px 0", flexShrink: 0 }}>
-          {TABS.map(t => {
-            const active = tab === t.id;
-            return (
-              <button key={t.id} onClick={() => setTab(t.id)} style={{
-                display: "flex", alignItems: "center", gap: 12,
-                padding: "12px 22px", background: active ? C.primaryLight : "none",
-                border: "none", borderLeft: `3px solid ${active ? C.primary : "transparent"}`,
-                cursor: "pointer", fontSize: 13, fontWeight: active ? 700 : 400,
-                color: active ? C.primary : C.sub, textAlign: "left",
-                fontFamily: "'DM Sans', sans-serif", transition: "all 0.15s",
-              }}>
-                <span style={{ fontSize: 16 }}>{t.icon}</span>
-                {t.label}
-              </button>
-            );
-          })}
-          {/* Spacer */}
-          <div style={{ flex: 1 }} />
-          {/* Plan badge bottom */}
-          <div style={{ padding: "16px 22px" }}>
-            <div style={{ background: C.primaryLight, borderRadius: 10, padding: "10px 14px", textAlign: "center" }}>
-              <p style={{ fontSize: 11, fontWeight: 700, color: C.primary, margin: "0 0 6px", textTransform: "uppercase", letterSpacing: 1 }}>
-                {planBadge[PLAN]}
-              </p>
-              <button onClick={() => setTab("compte")} style={{ fontSize: 11, color: C.accent, fontWeight: 700, background: "none", border: "none", cursor: "pointer", padding: 0 }}>
-                Gérer mon plan →
-              </button>
-            </div>
-          </div>
-        </div>
-        {/* Main content */}
-        <div style={{ flex: 1, overflowY: "auto", fontFamily: "'DM Sans', 'Segoe UI', sans-serif", maxWidth: 900, padding: "0 40px" }}>
+        {/* Contenu principal */}
+        <div style={{ flex: 1, overflowY: "auto", fontFamily: "'DM Sans', sans-serif", padding: isMobile ? "0 0 80px" : "0 40px", maxWidth: isMobile ? "100%" : 960 }}>
           <Page {...shared} />
         </div>
       </div>
+
+      {/* Nav bas mobile */}
+      {isMobile && (
+        <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100, background: C.card, borderTop: `1px solid ${C.border}`, display: "flex", padding: "6px 0 8px", boxShadow: "0 -2px 12px rgba(19,8,0,0.08)" }}>
+          {TABS.map(t => {
+            const active = tab === t.id;
+            return (
+              <button key={t.id} onClick={() => setTab(t.id)} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 2, background: "none", border: "none", cursor: "pointer", padding: "4px 2px" }}>
+                <span style={{ fontSize: 17 }}>{t.icon}</span>
+                <span style={{ fontSize: 8, fontWeight: active ? 700 : 400, color: active ? C.primary : C.sub, fontFamily: "'DM Sans', sans-serif" }}>{t.label}</span>
+                {active && <div style={{ width: 4, height: 4, borderRadius: "50%", background: C.primary }} />}
+              </button>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
